@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863182203504",
+    "project_id": "mentalzen-932af",
+    "storage_bucket": "mentalzen-932af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863182203504:android:5e9c3bb80a5d6b751fe2b5",
+        "android_client_info": {
+          "package_name": "com.example.mental_zen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBojHU9UIs0enhklT8Sg-wDqsMX9w_1Shg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
