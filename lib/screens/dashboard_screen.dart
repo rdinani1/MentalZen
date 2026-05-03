@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import 'login_screen.dart';
 import 'mood_screen.dart';
 import 'journal_screen.dart';
 import 'insights_screen.dart';
@@ -27,10 +29,29 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal.shade50,
+
+      // 🔥 APP BAR WITH LOGOUT
       appBar: AppBar(
         title: const Text('Mental Zen'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await AuthService().logout();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoginScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
+
+      // 🔥 MAIN BODY
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -43,6 +64,7 @@ class DashboardScreen extends StatelessWidget {
             const SizedBox(height: 8),
             const Text('How are you feeling today?'),
             const SizedBox(height: 24),
+
             _card(
               title: 'Mood Tracker',
               subtitle: 'Log today’s mood',
@@ -50,10 +72,13 @@ class DashboardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const MoodScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const MoodScreen(),
+                  ),
                 );
               },
             ),
+
             _card(
               title: 'Journal',
               subtitle: 'Write a private reflection',
@@ -61,10 +86,13 @@ class DashboardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const JournalScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const JournalScreen(),
+                  ),
                 );
               },
             ),
+
             _card(
               title: 'Insights',
               subtitle: 'View 7-day mood trends',
@@ -72,7 +100,9 @@ class DashboardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const InsightsScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const InsightsScreen(),
+                  ),
                 );
               },
             ),
