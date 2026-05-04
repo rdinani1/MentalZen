@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -21,12 +23,10 @@ class FirestoreService {
   }
 
   // ======================
-  // 📊 GET MOODS (STREAM)
+  // 📊 GET MOODS
   // ======================
   Stream<QuerySnapshot> getMoods() {
-    if (uid == null) {
-      return const Stream.empty();
-    }
+    if (uid == null) return const Stream.empty();
 
     return _db
         .collection('users')
@@ -49,12 +49,23 @@ class FirestoreService {
   }
 
   // ======================
-  // 📚 GET JOURNALS (STREAM)
+  // 📝 SAVE JOURNAL WITH IMAGE
+  // ======================
+  Future<void> saveJournalWithImage(String text, String? imageUrl) async {
+    if (uid == null) return;
+
+    await _db.collection('users').doc(uid).collection('journals').add({
+      'text': text,
+      'imageUrl': imageUrl,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
+  // ======================
+  // 📚 GET JOURNALS
   // ======================
   Stream<QuerySnapshot> getJournals() {
-    if (uid == null) {
-      return const Stream.empty();
-    }
+    if (uid == null) return const Stream.empty();
 
     return _db
         .collection('users')
@@ -65,7 +76,7 @@ class FirestoreService {
   }
 
   // ======================
-  // 📈 GET LAST 7 DAYS (FOR INSIGHTS)
+  // 📈 7-DAY MOODS (INSIGHTS)
   // ======================
   Future<List<Map<String, dynamic>>> getLast7DayMoods() async {
     if (uid == null) return [];
@@ -82,5 +93,27 @@ class FirestoreService {
         .get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+  // ======================
+  // 📸 UPLOAD IMAGE
+  // ======================
+  Future<String?> uploadImage(File file) async {
+    if (uid == null) return null;
+
+    try {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('users')
+          .child(uid!)
+          .child('journal_images')
+          .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      await ref.putFile(file);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      print("Upload error: $e");
+      return null;
+    }
   }
 }

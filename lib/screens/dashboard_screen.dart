@@ -8,13 +8,14 @@ import 'insights_screen.dart';
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
-  Widget _card({
+  Widget buildCard({
     required String title,
     required String subtitle,
     required IconData icon,
     required VoidCallback onTap,
   }) {
     return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         leading: Icon(icon, color: Colors.teal),
         title: Text(title),
@@ -30,7 +31,6 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.teal.shade50,
 
-      // 🔥 APP BAR WITH LOGOUT
       appBar: AppBar(
         title: const Text('Mental Zen'),
         centerTitle: true,
@@ -51,9 +51,9 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
 
-      // 🔥 MAIN BODY
       body: Padding(
         padding: const EdgeInsets.all(16),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,11 +61,14 @@ class DashboardScreen extends StatelessWidget {
               'Welcome back 🌿',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 8),
+
             const Text('How are you feeling today?'),
+
             const SizedBox(height: 24),
 
-            _card(
+            buildCard(
               title: 'Mood Tracker',
               subtitle: 'Log today’s mood',
               icon: Icons.emoji_emotions,
@@ -73,13 +76,13 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const MoodScreen(),
+                    builder: (_) => MoodScreen(),
                   ),
                 );
               },
             ),
 
-            _card(
+            buildCard(
               title: 'Journal',
               subtitle: 'Write a private reflection',
               icon: Icons.edit_note,
@@ -87,13 +90,13 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const JournalScreen(),
+                    builder: (_) => JournalScreen(),
                   ),
                 );
               },
             ),
 
-            _card(
+            buildCard(
               title: 'Insights',
               subtitle: 'View 7-day mood trends',
               icon: Icons.insights,
@@ -101,7 +104,7 @@ class DashboardScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const InsightsScreen(),
+                    builder: (_) => InsightsScreen(),
                   ),
                 );
               },
