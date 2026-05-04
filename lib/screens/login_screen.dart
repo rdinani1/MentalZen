@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../services/fcm_service.dart';
 import 'dashboard_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -63,6 +64,8 @@ class LoginScreen extends StatelessWidget {
                   );
 
                   if (user != null) {
+                    await FCMService().init();
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -88,8 +91,13 @@ class LoginScreen extends StatelessWidget {
                   );
 
                   if (user != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Account created!')),
+                    await FCMService().init();
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardScreen(),
+                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
